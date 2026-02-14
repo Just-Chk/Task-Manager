@@ -19,7 +19,7 @@ if (!process.env.MONGODB_URI) {
 app.use(cors());
 app.use(express.json());
 
-// Root route - THIS IS IMPORTANT FOR RENDER
+// Root route
 app.get('/', (req, res) => {
     res.json({ 
         message: 'Task Manager API is running!',
@@ -47,8 +47,8 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
-// 404 handler for undefined routes
-app.use('*', (req, res) => {
+// Remove the wildcard 404 handler or use this corrected version:
+app.all('*', (req, res) => {
     res.status(404).json({ 
         message: 'Route not found', 
         path: req.originalUrl,
