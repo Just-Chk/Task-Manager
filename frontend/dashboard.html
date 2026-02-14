@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <h1>Task Manager</h1>
+                <div class="user-info">
+                    <span id="welcomeUser"></span>
+                    <button onclick="logout()" class="btn-logout">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- Add Task Form -->
+        <section class="add-task-section">
+            <h2>Add New Task</h2>
+            <form id="taskForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="taskTitle" placeholder="Enter task title..." required>
+                    </div>
+                    <div class="form-group">
+                        <select id="taskCategory">
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-add">Add Task</button>
+                </div>
+                <div id="taskError" class="error-message" style="display: none;"></div>
+            </form>
+        </section>
+        
+        <!-- Filters and Sorting -->
+        <section class="task-controls">
+            <div class="filter-section">
+                <h3>Filter by Category</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Work</button>
+                    <button class="filter-btn">Personal</button>
+                    <button class="filter-btn">Urgent</button>
+                </div>
+            </div>
+            
+            <div class="sort-section">
+                <h3>Sort by</h3>
+                <div class="sort-buttons">
+                    <button class="sort-btn active">Date</button>
+                    <button class="sort-btn">Title</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Tasks List -->
+        <section class="tasks-section">
+            <h2>Your Tasks</h2>
+            <div id="tasksList" class="tasks-grid"></div>
+            <div id="loading" class="loading" style="display: none;">Loading tasks...</div>
+            <div id="noTasks" class="no-tasks" style="display: none;">No tasks found. Add some tasks to get started!</div>
+        </section>
+    </main>
+    
+    <!-- Edit Task Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Task</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <input type="text" id="editTitle" placeholder="Task title" required>
+                </div>
+                <div class="form-group">
+                    <select id="editCategory">
+                        <option value="Personal">Personal</option>
+                        <option value="Work">Work</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Scripts in correct order -->
+    <script src="/js/api.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
