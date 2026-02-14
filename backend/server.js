@@ -16,24 +16,22 @@ if (!process.env.MONGODB_URI) {
 }
 
 // Middleware
-app.use(cors({
-    origin: ['http://localhost:5000', 'https://your-frontend.netlify.app'], // Add your Netlify URL after deployment
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
-// Serve frontend only in development - in production, frontend is on Netlify
-if (process.env.NODE_ENV !== 'production') {
-    app.use(express.static(path.join(__dirname, '../frontend')));
-    
-    app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/login.html'));
+// Root route - THIS IS IMPORTANT FOR RENDER
+app.get('/', (req, res) => {
+    res.json({ 
+        message: 'Task Manager API is running!',
+        status: 'online',
+        timestamp: new Date().toISOString()
     });
+});
 
-    app.get('/dashboard', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));
-    });
-}
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', message: 'Server is healthy' });
+});
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -49,12 +47,16 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok' });
+// 404 handler for undefined routes
+app.use('*', (req, res) => {
+    res.status(404).json({ 
+        message: 'Route not found', 
+        path: req.originalUrl,
+        availableEndpoints: ['/', '/health', '/api/tasks', '/api/users']
+    });
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
 });
