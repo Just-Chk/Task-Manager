@@ -1,6 +1,6 @@
 const API_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:5000/api'
-    : 'https://your-backend.onrender.com/api'; // Replace with your Render URL after deployment
+    : 'https://task-manager-0liq.onrender.com/api';
 
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const headers = {
