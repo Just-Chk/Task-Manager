@@ -16,7 +16,10 @@ if (!process.env.MONGODB_URI) {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5000', 'https://chk-task-manager.netlify.app/login.html'],
+    credentials: true
+}));
 app.use(express.json());
 
 // Root route
