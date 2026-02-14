@@ -16,10 +16,14 @@ if (!process.env.MONGODB_URI) {
 }
 
 // Middleware
-app.use(cors({
-    origin: ['http://localhost:5000', 'https://chk-task-manager.netlify.app/login.html'],
-    credentials: true
-}));
+const corsOptions = {
+    origin: ['https://chk-task-manager.netlify.app', 'http://localhost:8888', 'http://localhost:5000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'x-auth-token'],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions)); // This handles preflight automatically
 app.use(express.json());
 
 // Root route
