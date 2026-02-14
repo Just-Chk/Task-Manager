@@ -24,13 +24,23 @@ app.get('/', (req, res) => {
     res.json({ 
         message: 'Task Manager API is running!',
         status: 'online',
+        endpoints: {
+            root: '/',
+            health: '/health',
+            tasks: '/api/tasks',
+            users: '/api/users'
+        },
         timestamp: new Date().toISOString()
     });
 });
 
 // Health check
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok', message: 'Server is healthy' });
+    res.json({ 
+        status: 'ok', 
+        message: 'Server is healthy',
+        timestamp: new Date().toISOString()
+    });
 });
 
 // MongoDB connection
@@ -47,14 +57,8 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
-// Remove the wildcard 404 handler or use this corrected version:
-app.all('*', (req, res) => {
-    res.status(404).json({ 
-        message: 'Route not found', 
-        path: req.originalUrl,
-        availableEndpoints: ['/', '/health', '/api/tasks', '/api/users']
-    });
-});
+// IMPORTANT: DO NOT add any wildcard route handlers!
+// Express will automatically handle 404s for undefined routes
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
